@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Jeu de Décodage</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        const Play = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+        );
+        
+        const Trophy = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+            </svg>
+        );
+        
+        const Clock = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        );
+        
+        const Target = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="6"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+            </svg>
+        );
+        
+        const Code = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+        );
+        
+        const CheckCircle = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        );
+        
+        const XCircle = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+        );
+
+        const DecodeGame = () => {
+            const [gameState, setGameState] = useState('menu');
+            const [questionNumber, setQuestionNumber] = useState(1);
+            const [totalQuestions, setTotalQuestions] = useState(10);
+            const [score, setScore] = useState(0);
+            const [timeLeft, setTimeLeft] = useState(60);
+            const [currentText, setCurrentText] = useState('');
+            const [encodedText, setEncodedText] = useState('');
+            const [encoding, setEncoding] = useState('binary');
+            const [userAnswer, setUserAnswer] = useState('');
+            const [bestScore, setBestScore] = useState(0);
+            const [feedback, setFeedback] = useState('');
+            const [answers, setAnswers] = useState([]);
+            
+            const [createMode, setCreateMode] = useState(false);
+            const [customWord, setCustomWord] = useState('');
+            const [customEncoding, setCustomEncoding] = useState('binary');
+            const [customEncoded, setCustomEncoded] = useState('');
+            
+            const [settings, setSettings] = useState({
+                questions: 10,
+                difficulty: 'medium'
+            });
+
+            const phrases = [
+                'Bonjour', 'Salut', 'Merci', 'Aurevoir', 'Bravo',
+                'Super', 'Genial', 'Parfait', 'Excellent', 'Magnifique',
+                'Python', 'Code', 'Jeu', 'Score', 'Temps',
+                'Chat', 'Chien', 'Soleil', 'Lune', 'Etoile',
+                'Fleur', 'Arbre', 'Ocean', 'Montagne', 'Riviere',
+                'Musique', 'Danse', 'Sport', 'Livre', 'Film',
+                'Bonne chance!', 'Bien joue!', 'Tres bien!', 'Felicitations!',
+                'Continue!', 'Tu es fort!', 'Incroyable!', 'Wow super!',
+                'Hello world', 'Game over', 'Level up', 'High score',
+                'Bon courage', 'A bientot', 'Bonne journee', 'Bonne soiree'
+            ];
+
+            const encodeText = (text, type) => {
+                switch(type) {
+                    case 'binary':
+                        return text.split('').map(c => 
+                            c.charCodeAt(0).toString(2).padStart(8, '0')
+                        ).join(' ');
+                    case 'hex':
+                        return text.split('').map(c => 
+                            c.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')
+                        ).join(' ');
+                    case 'octal':
+                        return text.split('').map(c => 
+                            c.charCodeAt(0).toString(8).padStart(3, '0')
+                        ).join(' ');
+                    case 'ascii':
+                        return text.split('').map(c => c.charCodeAt(0)).join(' ');
+                    default:
+                        return text;
+                }
+            };
+
+            const getEncodingForQuestion = (questionNum, difficulty) => {
+                const encodings = ['binary', 'hex', 'octal', 'ascii'];
+                
+                if (difficulty === 'easy') {
+                    return questionNum <= 5 ? 'binary' : 'hex';
+                } else if (difficulty === 'medium') {
+                    if (questionNum <= 3) return 'binary';
+                    if (questionNum <= 6) return 'hex';
+                    return 'octal';
+                } else {
+                    return encodings[Math.floor(Math.random() * encodings.length)];
+                }
+            };
+
+            const getTimeLimitForText = (text, encoding) => {
+                const baseTime = text.length * 5;
+                const encodingMultiplier = {
+                    'binary': 2.5,
+                    'hex': 2,
+                    'octal': 2.2,
+                    'ascii': 1.5
+                };
+                const calculatedTime = Math.ceil(baseTime * encodingMultiplier[encoding]);
+                return Math.max(60, calculatedTime); // Minimum 60 secondes (1 minute)
+            };
+
+            const generateChallenge = (questionNum) => {
+                let text;
+                
+                if (settings.difficulty === 'easy') {
+                    text = phrases[Math.floor(Math.random() * 15)];
+                } else if (settings.difficulty === 'medium') {
+                    text = phrases[Math.floor(Math.random() * 30)];
+                } else {
+                    text = phrases[Math.floor(Math.random() * phrases.length)];
+                }
+                
+                const enc = getEncodingForQuestion(questionNum, settings.difficulty);
+                const encoded = encodeText(text, enc);
+                const timeLimit = getTimeLimitForText(text, enc);
+                
+                setCurrentText(text);
+                setEncodedText(encoded);
+                setEncoding(enc);
+                setTimeLeft(timeLimit);
+                setUserAnswer('');
+                setFeedback('');
+            };
+
+            const startGame = () => {
+                setGameState('playing');
+                setQuestionNumber(1);
+                setScore(0);
+                setAnswers([]);
+                setTotalQuestions(settings.questions);
+                generateChallenge(1);
+            };
+
+            const normalizeText = (text) => {
+                return text.toLowerCase().replace(/\s+/g, '').trim();
+            };
+
+            const checkAnswer = () => {
+                const correct = normalizeText(userAnswer) === normalizeText(currentText);
+                const timeBonus = Math.floor(timeLeft * 5);
+                const lengthBonus = currentText.length * 10;
+                
+                const answerRecord = {
+                    question: questionNumber,
+                    encoded: encodedText,
+                    encoding: encoding,
+                    correct: currentText,
+                    userAnswer: userAnswer,
+                    isCorrect: correct,
+                    timeLeft: timeLeft,
+                    pointsEarned: 0
+                };
+                
+                if (correct) {
+                    const totalPoints = 100 + timeBonus + lengthBonus;
+                    answerRecord.pointsEarned = totalPoints;
+                    setScore(score + totalPoints);
+                    setFeedback(`✅ Correct! +${totalPoints} points`);
+                } else {
+                    setFeedback(`❌ Incorrect! Réponse: ${currentText}`);
+                }
+                
+                setAnswers([...answers, answerRecord]);
+                
+                setTimeout(() => {
+                    if (questionNumber < totalQuestions) {
+                        const nextQuestion = questionNumber + 1;
+                        setQuestionNumber(nextQuestion);
+                        generateChallenge(nextQuestion);
+                    } else {
+                        if (score > bestScore) setBestScore(score);
+                        setGameState('results');
+                    }
+                }, 2000);
+            };
+
+            const handleCreateEncode = () => {
+                if (customWord.trim()) {
+                    const encoded = encodeText(customWord, customEncoding);
+                    setCustomEncoded(encoded);
+                }
+            };
+
+            useEffect(() => {
+                if (gameState === 'playing' && timeLeft > 0 && feedback === '') {
+                    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+                    return () => clearTimeout(timer);
+                } else if (gameState === 'playing' && timeLeft === 0 && feedback === '') {
+                    setFeedback(`⏰ Temps écoulé! Réponse: ${currentText}`);
+                    
+                    const answerRecord = {
+                        question: questionNumber,
+                        encoded: encodedText,
+                        encoding: encoding,
+                        correct: currentText,
+                        userAnswer: userAnswer || '(pas de réponse)',
+                        isCorrect: false,
+                        timeLeft: 0,
+                        pointsEarned: 0
+                    };
+                    
+                    setAnswers([...answers, answerRecord]);
+                    
+                    setTimeout(() => {
+                        if (questionNumber < totalQuestions) {
+                            const nextQuestion = questionNumber + 1;
+                            setQuestionNumber(nextQuestion);
+                            generateChallenge(nextQuestion);
+                        } else {
+                            if (score > bestScore) setBestScore(score);
+                            setGameState('results');
+                        }
+                    }, 2000);
+                }
+            }, [timeLeft, gameState, feedback]);
+
+            const encodingNames = {
+                binary: 'Binaire',
+                hex: 'Hexadécimal',
+                octal: 'Octal',
+                ascii: 'ASCII'
+            };
+
+            if (createMode) {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8 flex items-center justify-center">
+                        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full border border-white/20 shadow-2xl">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-3xl font-bold text-white flex items-center gap-2">
+                                    <Code />
+                                    Mode Création
+                                </h2>
+                                <button
+                                    onClick={() => setCreateMode(false)}
+                                    className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition"
+                                >
+                                    Retour
+                                </button>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-white mb-2 font-semibold">Texte à encoder:</label>
+                                    <input
+                                        type="text"
+                                        value={customWord}
+                                        onChange={(e) => setCustomWord(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                        placeholder="Entrez votre texte..."
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-white mb-2 font-semibold">Type d'encodage:</label>
+                                    <select
+                                        value={customEncoding}
+                                        onChange={(e) => setCustomEncoding(e.target.value)}
+                                        className="w-full px-4 py-3 rounded-lg bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                    >
+                                        <option value="binary" className="bg-purple-900">Binaire</option>
+                                        <option value="hex" className="bg-purple-900">Hexadécimal</option>
+                                        <option value="octal" className="bg-purple-900">Octal</option>
+                                        <option value="ascii" className="bg-purple-900">ASCII</option>
+                                    </select>
+                                </div>
+
+                                <button
+                                    onClick={handleCreateEncode}
+                                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105"
+                                >
+                                    Encoder
+                                </button>
+
+                                {customEncoded && (
+                                    <div className="bg-white/10 p-6 rounded-xl border border-white/20">
+                                        <h3 className="text-white font-semibold mb-2">Résultat encodé:</h3>
+                                        <p className="text-yellow-300 font-mono text-sm break-all">{customEncoded}</p>
+                                        <div className="mt-4 text-white/70 text-sm">
+                                            Partagez ce code avec vos amis pour qu'ils le décodent!
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'menu') {
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8 flex items-center justify-center">
+                        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full border border-white/20 shadow-2xl">
+                            <div className="text-center mb-8">
+                                <h1 className="text-5xl font-bold text-white mb-2">🔐 Décodeur</h1>
+                                <p className="text-purple-200 text-lg">Déchiffrez les codes secrets!</p>
+                                <p className="text-purple-300/70 text-sm mt-3">✨ Conçu par Corneille Ligan ✨</p>
+                                <p className="text-purple-300/50 text-xs">© 2025 - Tous droits réservés</p>
+                            </div>
+
+                            <div className="bg-white/10 rounded-xl p-6 mb-6 border border-white/20">
+                                <h3 className="text-white font-bold mb-3 flex items-center gap-2">
+                                    <Trophy />
+                                    Meilleur Score
+                                </h3>
+                                <p className="text-4xl font-bold text-yellow-300">{bestScore}</p>
+                            </div>
+
+                            <div className="bg-white/10 rounded-xl p-6 mb-6 border border-white/20">
+                                <h3 className="text-white font-bold mb-4">⚙️ Paramètres</h3>
+                                
+                                <div className="mb-4">
+                                    <label className="block text-white/80 mb-2 text-sm">Nombre de questions:</label>
+                                    <select
+                                        value={settings.questions}
+                                        onChange={(e) => setSettings({...settings, questions: parseInt(e.target.value)})}
+                                        className="w-full px-3 py-2 rounded-lg bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                    >
+                                        <option value="5" className="bg-purple-900">5 questions</option>
+                                        <option value="10" className="bg-purple-900">10 questions</option>
+                                        <option value="15" className="bg-purple-900">15 questions</option>
+                                        <option value="20" className="bg-purple-900">20 questions</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label className="block text-white/80 mb-2 text-sm">Difficulté:</label>
+                                    <select
+                                        value={settings.difficulty}
+                                        onChange={(e) => setSettings({...settings, difficulty: e.target.value})}
+                                        className="w-full px-3 py-2 rounded-lg bg-white/20 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                    >
+                                        <option value="easy" className="bg-purple-900">Facile</option>
+                                        <option value="medium" className="bg-purple-900">Moyen</option>
+                                        <option value="hard" className="bg-purple-900">Difficile</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <button
+                                    onClick={startGame}
+                                    className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
+                                >
+                                    <Play />
+                                    Jouer
+                                </button>
+
+                                <button
+                                    onClick={() => setCreateMode(true)}
+                                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
+                                >
+                                    <Code />
+                                    Mode Création
+                                </button>
+                            </div>
+
+                            <div className="mt-6 bg-white/5 rounded-xl p-4 border border-white/10">
+                                <h4 className="text-white font-bold mb-3 text-sm">📖 Règles du jeu</h4>
+                                <ul className="text-white/70 text-xs space-y-2">
+                                    <li>• Décodez le texte avant la fin du temps</li>
+                                    <li>• Le temps est calculé selon la longueur du texte</li>
+                                    <li>• Points : 100 + bonus temps + bonus longueur</li>
+                                    <li>• Les espaces et majuscules sont ignorés</li>
+                                    <li>• 3 niveaux de difficulté disponibles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'results') {
+                const correctAnswers = answers.filter(a => a.isCorrect).length;
+                const accuracy = ((correctAnswers / totalQuestions) * 100).toFixed(1);
+                
+                return (
+                    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8 flex items-center justify-center overflow-y-auto">
+                        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-4xl w-full border border-white/20 shadow-2xl my-8">
+                            <h2 className="text-4xl font-bold text-white mb-6 text-center">📊 Résultats</h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                                <div className="bg-white/10 rounded-xl p-4 border border-white/20 text-center">
+                                    <p className="text-purple-200 mb-1">Score Total</p>
+                                    <p className="text-4xl font-bold text-yellow-300">{score}</p>
+                                </div>
+                                
+                                <div className="bg-white/10 rounded-xl p-4 border border-white/20 text-center">
+                                    <p className="text-purple-200 mb-1">Précision</p>
+                                    <p className="text-4xl font-bold text-white">{accuracy}%</p>
+                                </div>
+                                
+                                <div className="bg-white/10 rounded-xl p-4 border border-white/20 text-center">
+                                    <p className="text-purple-200 mb-1">Réponses Correctes</p>
+                                    <p className="text-4xl font-bold text-green-300">{correctAnswers}/{totalQuestions}</p>
+                                </div>
+                            </div>
+
+                            {score > bestScore && (
+                                <div className="bg-yellow-500/20 rounded-xl p-4 border border-yellow-400/50 mb-6 text-center">
+                                    <p className="text-yellow-300 font-bold text-xl">🎉 Nouveau Record!</p>
+                                </div>
+                            )}
+
+                            <h3 className="text-2xl font-bold text-white mb-4">📝 Détails des réponses</h3>
+                            
+                            <div className="space-y-3 mb-6 max-h-96 overflow-y-auto">
+                                {answers.map((answer, index) => (
+                                    <div key={index} className={`p-4 rounded-lg border ${
+                                        answer.isCorrect 
+                                            ? 'bg-green-500/10 border-green-400/50' 
+                                            : 'bg-red-500/10 border-red-400/50'
+                                    }`}>
+                                        <div className="flex items-start justify-between mb-2">
+                                            <div className="flex items-center gap-2">
+                                                {answer.isCorrect ? <CheckCircle /> : <XCircle />}
+                                                <span className="text-white font-semibold">Question {answer.question}</span>
+                                                <span className="text-purple-300 text-sm">({encodingNames[answer.encoding]})</span>
+                                            </div>
+                                            {answer.isCorrect && (
+                                                <span className="text-yellow-300 font-bold">+{answer.pointsEarned} pts</span>
+                                            )}
+                                        </div>
+                                        <div className="bg-black/20 rounded p-2 mb-2">
+                                            <p className="text-yellow-300 font-mono text-xs break-all">{answer.encoded}</p>
+                                        </div>
+                                        <div className="text-sm">
+                                            <p className="text-green-300">✓ Réponse: {answer.correct}</p>
+                                            <p className={answer.isCorrect ? 'text-green-300' : 'text-red-300'}>
+                                                {answer.isCorrect ? '✓' : '✗'} Votre réponse: {answer.userAnswer}
+                                            </p>
+                                            <p className="text-purple-300 text-xs mt-1">Temps restant: {answer.timeLeft}s</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => setGameState('menu')}
+                                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition transform hover:scale-105 shadow-lg"
+                            >
+                                Menu Principal
+                            </button>
+                            
+                            <div className="mt-6 text-center">
+                                <p className="text-purple-300/60 text-sm">✨ Conçu avec passion par Corneille ✨</p>
+                                <p className="text-purple-300/40 text-xs mt-1">© 2025 - Tous droits réservés</p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8 flex items-center justify-center">
+                    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full border border-white/20 shadow-2xl">
+                        <div className="flex justify-between items-center mb-6">
+                            <div className="flex gap-4">
+                                <div className="bg-white/20 px-4 py-2 rounded-lg flex items-center gap-2">
+                                    <Target />
+                                    <span className="text-white font-bold">Q {questionNumber}/{totalQuestions}</span>
+                                </div>
+                                <div className="bg-white/20 px-4 py-2 rounded-lg flex items-center gap-2">
+                                    <Trophy />
+                                    <span className="text-white font-bold">{score}</span>
+                                </div>
+                            </div>
+                            
+                            <div className={`bg-white/20 px-4 py-2 rounded-lg flex items-center gap-2 ${timeLeft <= 5 ? 'animate-pulse bg-red-500/30' : ''}`}>
+                                <Clock />
+                                <span className="text-white font-bold">{timeLeft}s</span>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/10 rounded-xl p-6 mb-6 border border-white/20">
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="bg-purple-500/30 px-3 py-1 rounded-full text-purple-200 text-sm font-semibold">
+                                    {encodingNames[encoding]}
+                                </span>
+                                <span className="text-white/70 text-sm">
+                                    {currentText.length} caractère{currentText.length > 1 ? 's' : ''}
+                                </span>
+                            </div>
+                            <div className="bg-black/30 rounded-lg p-4 mb-4">
+                                <p className="text-yellow-300 font-mono text-base text-center break-all">
+                                    {encodedText}
+                                </p>
+                            </div>
+                            <p className="text-white/70 text-center text-sm">
+                                Décodez le texte ci-dessus
+                            </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <input
+                                type="text"
+                                value={userAnswer}
+                                onChange={(e) => setUserAnswer(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && checkAnswer()}
+                                className="w-full px-4 py-3 rounded-lg bg-white/20 text-white text-lg placeholder-white/50 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                placeholder="Votre réponse..."
+                                disabled={feedback !== ''}
+                            />
+
+                            <button
+                                onClick={checkAnswer}
+                                disabled={!userAnswer || feedback !== ''}
+                                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg font-bold text-lg hover:from-green-600 hover:to-emerald-600 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+                            >
+                                Valider
+                            </button>
+                        </div>
+
+                        {feedback && (
+                            <div className={`mt-4 p-4 rounded-lg text-center font-bold ${
+                                feedback.includes('Correct') 
+                                    ? 'bg-green-500/20 text-green-300 border border-green-400/50' 
+                                    : 'bg-red-500/20 text-red-300 border border-red-400/50'
+                            }`}>
+                                {feedback}
+                            </div>
+                        )}
+                        
+                        <div className="mt-6 text-center">
+                            <p className="text-purple-300/50 text-sm">✨ Conçu par Corneille Ligan ✨</p>
+                            <p className="text-purple-300/30 text-xs mt-1">© 2025 - Tous droits réservés</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<DecodeGame />);
+    </script>
+</body>
+</html>

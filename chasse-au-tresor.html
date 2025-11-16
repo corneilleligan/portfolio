@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-jeu Python - Chasse au Trésor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #f093fb;
+            padding-bottom: 10px;
+        }
+
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 25px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .code-block .comment {
+            color: #5c6370;
+        }
+
+        .code-block .keyword {
+            color: #c678dd;
+        }
+
+        .code-block .string {
+            color: #98c379;
+        }
+
+        .code-block .function {
+            color: #61afef;
+        }
+
+        .code-block .number {
+            color: #d19a66;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .feature-card p {
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+            cursor: pointer;
+            border: none;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .game-preview {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .game-preview img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span>🎮</span> Mini-Jeu Python - Chasse au Trésor</h1>
+            <p>Jeu d'aventure interactif avec interface graphique Tkinter</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>✨ Fonctionnalités du Jeu</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>🗺️ Grille Interactive</h3>
+                        <p>Grille 5x5 avec cases cliquables pour explorer le terrain</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💎 Trésors Cachés</h3>
+                        <p>3 trésors positionnés aléatoirement à découvrir</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>💣 Pièges</h3>
+                        <p>2 pièges qui font perdre des points</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📊 Système de Score</h3>
+                        <p>Compteur de points et de tentatives en temps réel</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎨 Interface Colorée</h3>
+                        <p>Design moderne avec animations et feedback visuel</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔄 Rejouer</h3>
+                        <p>Bouton pour recommencer une nouvelle partie</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🛠️ Technologies Utilisées</h2>
+                <div class="tech-stack">
+                    <span class="tech-badge">Python 3</span>
+                    <span class="tech-badge">Tkinter GUI</span>
+                    <span class="tech-badge">Random Module</span>
+                    <span class="tech-badge">OOP</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💻 Code Source</h2>
+                <div class="code-block">
+<pre><span class="comment">"""
+Mini-Jeu Python : Chasse au Trésor
+Auteur: [Votre Nom]
+Description: Jeu interactif avec interface graphique Tkinter
+"""</span>
+
+<span class="keyword">import</span> tkinter <span class="keyword">as</span> tk
+<span class="keyword">from</span> tkinter <span class="keyword">import</span> messagebox
+<span class="keyword">import</span> random
+
+
+<span class="keyword">class</span> <span class="function">ChasseTresor</span>:
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, root):
+        self.root = root
+        self.root.title(<span class="string">"🎮 Chasse au Trésor"</span>)
+        self.root.geometry(<span class="string">"600x700"</span>)
+        self.root.configure(bg=<span class="string">"#2c3e50"</span>)
+        
+        <span class="comment"># Variables du jeu</span>
+        self.taille_grille = <span class="number">5</span>
+        self.score = <span class="number">0</span>
+        self.tentatives = <span class="number">0</span>
+        self.max_tentatives = <span class="number">15</span>
+        
+        <span class="comment"># Positions des trésors et pièges</span>
+        self.positions_tresors = self.<span class="function">generer_positions</span>(<span class="number">3</span>)
+        self.positions_pieges = self.<span class="function">generer_positions</span>(<span class="number">2</span>)
+        self.cases_revelees = set()
+        
+        self.<span class="function">creer_interface</span>()
+    
+    <span class="keyword">def</span> <span class="function">generer_positions</span>(self, nombre):
+        <span class="string">"""Génère des positions aléatoires uniques"""</span>
+        positions = set()
+        <span class="keyword">while</span> len(positions) < nombre:
+            x = random.randint(<span class="number">0</span>, self.taille_grille - <span class="number">1</span>)
+            y = random.randint(<span class="number">0</span>, self.taille_grille - <span class="number">1</span>)
+            positions.add((x, y))
+        <span class="keyword">return</span> positions
+    
+    <span class="keyword">def</span> <span class="function">creer_interface</span>(self):
+        <span class="string">"""Crée l'interface graphique"""</span>
+        <span class="comment"># Titre</span>
+        titre = tk.Label(
+            self.root,
+            text=<span class="string">"🗺️ CHASSE AU TRÉSOR 💎"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">24</span>, <span class="string">"bold"</span>),
+            bg=<span class="string">"#2c3e50"</span>,
+            fg=<span class="string">"#ecf0f1"</span>,
+            pady=<span class="number">20</span>
+        )
+        titre.pack()
+        
+        <span class="comment"># Frame pour les informations</span>
+        info_frame = tk.Frame(self.root, bg=<span class="string">"#2c3e50"</span>)
+        info_frame.pack(pady=<span class="number">10</span>)
+        
+        self.label_score = tk.Label(
+            info_frame,
+            text=<span class="string">f"💰 Score: {self.score}"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">16</span>, <span class="string">"bold"</span>),
+            bg=<span class="string">"#27ae60"</span>,
+            fg=<span class="string">"white"</span>,
+            padx=<span class="number">20</span>,
+            pady=<span class="number">10</span>,
+            borderwidth=<span class="number">3</span>,
+            relief=<span class="string">"raised"</span>
+        )
+        self.label_score.pack(side=tk.LEFT, padx=<span class="number">10</span>)
+        
+        self.label_tentatives = tk.Label(
+            info_frame,
+            text=<span class="string">f"🎯 Tentatives: {self.tentatives}/{self.max_tentatives}"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">16</span>, <span class="string">"bold"</span>),
+            bg=<span class="string">"#3498db"</span>,
+            fg=<span class="string">"white"</span>,
+            padx=<span class="number">20</span>,
+            pady=<span class="number">10</span>,
+            borderwidth=<span class="number">3</span>,
+            relief=<span class="string">"raised"</span>
+        )
+        self.label_tentatives.pack(side=tk.LEFT, padx=<span class="number">10</span>)
+        
+        <span class="comment"># Instructions</span>
+        instructions = tk.Label(
+            self.root,
+            text=<span class="string">"Trouvez les 3 trésors cachés ! Attention aux pièges !"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">12</span>),
+            bg=<span class="string">"#2c3e50"</span>,
+            fg=<span class="string">"#ecf0f1"</span>,
+            pady=<span class="number">10</span>
+        )
+        instructions.pack()
+        
+        <span class="comment"># Frame pour la grille</span>
+        grille_frame = tk.Frame(self.root, bg=<span class="string">"#2c3e50"</span>)
+        grille_frame.pack(pady=<span class="number">20</span>)
+        
+        <span class="comment"># Créer la grille de boutons</span>
+        self.boutons = []
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.taille_grille):
+            ligne = []
+            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.taille_grille):
+                btn = tk.Button(
+                    grille_frame,
+                    text=<span class="string">"❓"</span>,
+                    font=(<span class="string">"Arial"</span>, <span class="number">20</span>, <span class="string">"bold"</span>),
+                    width=<span class="number">4</span>,
+                    height=<span class="number">2</span>,
+                    bg=<span class="string">"#34495e"</span>,
+                    fg=<span class="string">"white"</span>,
+                    activebackground=<span class="string">"#7f8c8d"</span>,
+                    command=<span class="keyword">lambda</span> x=i, y=j: self.<span class="function">cliquer_case</span>(x, y)
+                )
+                btn.grid(row=i, column=j, padx=<span class="number">5</span>, pady=<span class="number">5</span>)
+                ligne.append(btn)
+            self.boutons.append(ligne)
+        
+        <span class="comment"># Bouton rejouer</span>
+        btn_rejouer = tk.Button(
+            self.root,
+            text=<span class="string">"🔄 Nouvelle Partie"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">14</span>, <span class="string">"bold"</span>),
+            bg=<span class="string">"#e74c3c"</span>,
+            fg=<span class="string">"white"</span>,
+            padx=<span class="number">20</span>,
+            pady=<span class="number">10</span>,
+            command=self.<span class="function">rejouer</span>,
+            cursor=<span class="string">"hand2"</span>
+        )
+        btn_rejouer.pack(pady=<span class="number">20</span>)
+        
+        <span class="comment"># Légende</span>
+        legende = tk.Label(
+            self.root,
+            text=<span class="string">"💎 Trésor (+10 pts) | 💣 Piège (-5 pts) | ⬜ Vide (0 pt)"</span>,
+            font=(<span class="string">"Arial"</span>, <span class="number">10</span>),
+            bg=<span class="string">"#2c3e50"</span>,
+            fg=<span class="string">"#95a5a6"</span>,
+            pady=<span class="number">10</span>
+        )
+        legende.pack()
+    
+    <span class="keyword">def</span> <span class="function">cliquer_case</span>(self, x, y):
+        <span class="string">"""Gère le clic sur une case"""</span>
+        <span class="keyword">if</span> (x, y) <span class="keyword">in</span> self.cases_revelees:
+            <span class="keyword">return</span>
+        
+        <span class="keyword">if</span> self.tentatives >= self.max_tentatives:
+            messagebox.showinfo(<span class="string">"Fin du jeu"</span>, <span class="string">"Plus de tentatives !"</span>)
+            <span class="keyword">return</span>
+        
+        self.tentatives += <span class="number">1</span>
+        self.cases_revelees.add((x, y))
+        btn = self.boutons[x][y]
+        
+        <span class="comment"># Vérifier si c'est un trésor</span>
+        <span class="keyword">if</span> (x, y) <span class="keyword">in</span> self.positions_tresors:
+            btn.config(text=<span class="string">"💎"</span>, bg=<span class="string">"#f39c12"</span>, state=<span class="string">"disabled"</span>)
+            self.score += <span class="number">10</span>
+            self.positions_tresors.remove((x, y))
+            
+            <span class="keyword">if</span> len(self.positions_tresors) == <span class="number">0</span>:
+                messagebox.showinfo(
+                    <span class="string">"🎉 Victoire !"</span>,
+                    <span class="string">f"Bravo ! Vous avez trouvé tous les trésors !\nScore final: {self.score} points"</span>
+                )
+        
+        <span class="comment"># Vérifier si c'est un piège</span>
+        <span class="keyword">elif</span> (x, y) <span class="keyword">in</span> self.positions_pieges:
+            btn.config(text=<span class="string">"💣"</span>, bg=<span class="string">"#e74c3c"</span>, state=<span class="string">"disabled"</span>)
+            self.score = max(<span class="number">0</span>, self.score - <span class="number">5</span>)
+            self.positions_pieges.remove((x, y))
+        
+        <span class="comment"># Case vide</span>
+        <span class="keyword">else</span>:
+            btn.config(text=<span class="string">"⬜"</span>, bg=<span class="string">"#95a5a6"</span>, state=<span class="string">"disabled"</span>)
+        
+        <span class="comment"># Mettre à jour l'affichage</span>
+        self.<span class="function">mettre_a_jour_affichage</span>()
+        
+        <span class="comment"># Vérifier la fin du jeu</span>
+        <span class="keyword">if</span> self.tentatives >= self.max_tentatives:
+            messagebox.showinfo(
+                <span class="string">"Fin du jeu"</span>,
+                <span class="string">f"Plus de tentatives !\nScore final: {self.score} points"</span>
+            )
+    
+    <span class="keyword">def</span> <span class="function">mettre_a_jour_affichage</span>(self):
+        <span class="string">"""Met à jour le score et les tentatives"""</span>
+        self.label_score.config(text=<span class="string">f"💰 Score: {self.score}"</span>)
+        self.label_tentatives.config(
+            text=<span class="string">f"🎯 Tentatives: {self.tentatives}/{self.max_tentatives}"</span>
+        )
+    
+    <span class="keyword">def</span> <span class="function">rejouer</span>(self):
+        <span class="string">"""Recommence une nouvelle partie"""</span>
+        self.score = <span class="number">0</span>
+        self.tentatives = <span class="number">0</span>
+        self.positions_tresors = self.<span class="function">generer_positions</span>(<span class="number">3</span>)
+        self.positions_pieges = self.<span class="function">generer_positions</span>(<span class="number">2</span>)
+        self.cases_revelees = set()
+        
+        <span class="comment"># Réinitialiser tous les boutons</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.taille_grille):
+            <span class="keyword">for</span> j <span class="keyword">in</span> range(self.taille_grille):
+                self.boutons[i][j].config(
+                    text=<span class="string">"❓"</span>,
+                    bg=<span class="string">"#34495e"</span>,
+                    state=<span class="string">"normal"</span>
+                )
+        
+        self.<span class="function">mettre_a_jour_affichage</span>()
+
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    root = tk.Tk()
+    jeu = <span class="function">ChasseTresor</span>(root)
+    root.mainloop()</pre>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎯 Règles du Jeu</h2>
+                <ul style="line-height: 2; color: #2c3e50; font-size: 1.1em; margin-left: 20px;">
+                    <li><strong>Objectif :</strong> Trouver les 3 trésors cachés dans la grille</li>
+                    <li><strong>Tentatives :</strong> Vous avez 15 clics maximum</li>
+                    <li><strong>Trésor 💎 :</strong> +10 points</li>
+                    <li><strong>Piège 💣 :</strong> -5 points</li>
+                    <li><strong>Case vide ⬜ :</strong> 0 point</li>
+                    <li><strong>Victoire :</strong> Trouvez tous les trésors avant la fin des tentatives</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>📦 Installation et Utilisation</h2>
+                <div class="code-block">
+<pre><span class="comment"># Prérequis : Python 3.x installé</span>
+
+<span class="comment"># 1. Télécharger le fichier</span>
+<span class="comment"># 2. Ouvrir un terminal dans le dossier</span>
+
+<span class="comment"># 3. Lancer le jeu</span>
+python chasse_tresor.py
+
+<span class="comment"># Ou sous certains systèmes</span>
+python3 chasse_tresor.py</pre>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="download-btn" onclick="downloadCode()">
+                    💾 Télécharger le code source
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadCode() {
+            const code = `"""
+Mini-Jeu Python : Chasse au Trésor
+Auteur: [Votre Nom]
+Description: Jeu interactif avec interface graphique Tkinter
+"""
+
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+
+class ChasseTresor:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🎮 Chasse au Trésor")
+        self.root.geometry("600x700")
+        self.root.configure(bg="#2c3e50")
+        
+        # Variables du jeu
+        self.taille_grille = 5
+        self.score = 0
+        self.tentatives = 0
+        self.max_tentatives = 15
+        
+        # Positions des trésors et pièges
+        self.positions_tresors = self.generer_positions(3)
+        self.positions_pieges = self.generer_positions(2)
+        self.cases_revelees = set()
+        
+        self.creer_interface()
+    
+    def generer_positions(self, nombre):
+        """Génère des positions aléatoires uniques"""
+        positions = set()
+        while len(positions) < nombre:
+            x = random.randint(0, self.taille_grille - 1)
+            y = random.randint(0, self.taille_grille - 1)
+            positions.add((x, y))
+        return positions
+    
+    def creer_interface(self):
+        """Crée l'interface graphique"""
+        # Titre
+        titre = tk.Label(
+            self.root,
+            text="🗺️ CHASSE AU TRÉSOR 💎",
+            font=("Arial", 24, "bold"),
+            bg="#2c3e50",
+            fg="#ecf0f1",
+            pady=20
+        )
+        titre.pack()
+        
+        # Frame pour les informations
+        info_frame = tk.Frame(self.root, bg="#2c3e50")
+        info_frame.pack(pady=10)
+        
+        self.label_score = tk.Label(
+            info_frame,
+            text=f"💰 Score: {self.score}",
+            font=("Arial", 16, "bold"),
+            bg="#27ae60",
+            fg="white",
+            padx=20,
+            pady=10,
+            borderwidth=3,
+            relief="raised"
+        )
+        self.label_score.pack(side=tk.LEFT, padx=10)
+        
+        self.label_tentatives = tk.Label(
+            info_frame,
+            text=f"🎯 Tentatives: {self.tentatives}/{self.max_tentatives}",
+            font=("Arial", 16, "bold"),
+            bg="#3498db",
+            fg="white",
+            padx=20,
+            pady=10,
+            borderwidth=3,
+            relief="raised"
+        )
+        self.label_tentatives.pack(side=tk.LEFT, padx=10)
+        
+        # Instructions
+        instructions = tk.Label(
+            self.root,
+            text="Trouvez les 3 trésors cachés ! Attention aux pièges !",
+            font=("Arial", 12),
+            bg="#2c3e50",
+            fg="#ecf0f1",
+            pady=10
+        )
+        instructions.pack()
+        
+        # Frame pour la grille
+        grille_frame = tk.Frame(self.root, bg="#2c3e50")
+        grille_frame.pack(pady=20)
+        
+        # Créer la grille de boutons
+        self.boutons = []
+        for i in range(self.taille_grille):
+            ligne = []
+            for j in range(self.taille_grille):
+                btn = tk.Button(
+                    grille_frame,
+                    text="❓",
+                    font=("Arial", 20, "bold"),
+                    width=4,
+                    height=2,
+                    bg="#34495e",
+                    fg="white",
+                    activebackground="#7f8c8d",
+                    command=lambda x=i, y=j: self.cliquer_case(x, y)
+                )
+                btn.grid(row=i, column=j, padx=5, pady=5)
+                ligne.append(btn)
+            self.boutons.append(ligne)
+        
+        # Bouton rejouer
+        btn_rejouer = tk.Button(
+            self.root,
+            text="🔄 Nouvelle Partie",
+            font=("Arial", 14, "bold"),
+            bg="#e74c3c",
+            fg="white",
+            padx=20,
+            pady=10,
+            command=self.rejouer,
+            cursor="hand2"
+        )
+        btn_rejouer.pack(pady=20)
+        
+        # Légende
+        legende = tk.Label(
+            self.root,
+            text="💎 Trésor (+10 pts) | 💣 Piège (-5 pts) | ⬜ Vide (0 pt)",
+            font=("Arial", 10),
+            bg="#2c3e50",
+            fg="#95a5a6",
+            pady=10
+        )
+        legende.pack()
+    
+    def cliquer_case(self, x, y):
+        """Gère le clic sur une case"""
+        if (x, y) in self.cases_revelees:
+            return
+        
+        if self.tentatives >= self.max_tentatives:
+            messagebox.showinfo("Fin du jeu", "Plus de tentatives !")
+            return
+        
+        self.tentatives += 1
+        self.cases_revelees.add((x, y))
+        btn = self.boutons[x][y]
+        
+        # Vérifier si c'est un trésor
+        if (x, y) in self.positions_tresors:
+            btn.config(text="💎", bg="#f39c12", state="disabled")
+            self.score += 10
+            self.positions_tresors.remove((x, y))
+            
+            if len(self.positions_tresors) == 0:
+                messagebox.showinfo(
+                    "🎉 Victoire !",
+                    f"Bravo ! Vous avez trouvé tous les trésors !\\nScore final: {self.score} points"
+                )
+        
+        # Vérifier si c'est un piège
+        elif (x, y) in self.positions_pieges:
+            btn.config(text="💣", bg="#e74c3c", state="disabled")
+            self.score = max(0, self.score - 5)
+            self.positions_pieges.remove((x, y))
+        
+        # Case vide
+        else:
+            btn.config(text="⬜", bg="#95a5a6", state="disabled")
+        
+        # Mettre à jour l'affichage
+        self.mettre_a_jour_affichage()
+        
+        # Vérifier la fin du jeu
+        if self.tentatives >= self.max_tentatives:
+            messagebox.showinfo(
+                "Fin du jeu",
+                f"Plus de tentatives !\\nScore final: {self.score} points"
+            )
+    
+    def mettre_a_jour_affichage(self):
+        """Met à jour le score et les tentatives"""
+        self.label_score.config(text=f"💰 Score: {self.score}")
+        self.label_tentatives.config(
+            text=f"🎯 Tentatives: {self.tentatives}/{self.max_tentatives}"
+        )
+    
+    def rejouer(self):
+        """Recommence une nouvelle partie"""
+        self.score = 0
+        self.tentatives = 0
+        self.positions_tresors = self.generer_positions(3)
+        self.positions_pieges = self.generer_positions(2)
+        self.cases_revelees = set()
+        
+        # Réinitialiser tous les boutons
+        for i in range(self.taille_grille):
+            for j in range(self.taille_grille):
+                self.boutons[i][j].config(
+                    text="❓",
+                    bg="#34495e",
+                    state="normal"
+                )
+        
+        self.mettre_a_jour_affichage()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    jeu = ChasseTresor(root)
+    root.mainloop()
+`;
+            
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'chasse_tresor.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('✓ Fichier téléchargé avec succès !');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corneille Ligan - Portfolio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lien vers le fichier CSS externe -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main>
+
+    <aside class="sidebar">
+      <div class="sidebar-info">
+        <figure class="avatar-box">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect fill='%231d3557' width='120' height='120'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' fill='%2364ffda'%3ECL%3C/text%3E%3C/svg%3E" alt="Corneille Ligan">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name">Corneille Ligan</h1>
+          <p class="title">Étudiant en L2 Informatique</p>
+        </div>
+      </div>
+
+      <div class="sidebar-info_more">
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+          <li class="contact-item">
+            <div class="icon-box">📧</div>
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+              <a href="mailto:corneilleligan@gmail.com" class="contact-link">corneilleligan@gmail.com</a>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <div class="icon-box">📱</div>
+            <div class="contact-info">
+              <p class="contact-title">Téléphone</p>
+              <a href="tel:+33635863094" class="contact-link">+33 6 35 86 30 94</a>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <div class="icon-box">📍</div>
+            <div class="contact-info">
+              <p class="contact-title">Localisation</p>
+              <address>Limoges, France</address>
+            </div>
+          </li>
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+          <li class="social-item">
+            <a href="https://www.linkedin.com/in/corneille-ligan-5368a4225" target="_blank" class="social-link" title="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <div class="main-content">
+
+      <nav class="navbar">
+        <ul class="navbar-list">
+          <li class="navbar-item"><button class="navbar-link active" data-nav-link="about">À propos</button></li>
+          <li class="navbar-item"><button class="navbar-link" data-nav-link="resume">Formations & Experiences</button></li>
+          <li class="navbar-item"><button class="navbar-link" data-nav-link="portfolio">Projets</button></li>
+          <li class="navbar-item"><button class="navbar-link" data-nav-link="contact">Contact</button></li>
+        </ul>
+      </nav>
+
+      <article class="about active" data-page="about">
+        <header>
+          <h2 class="article-title">À propos</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            Étudiant en Licence 2 Informatique à l'Université de Limoges, je suis passionné par le développement web et la création de solutions numériques innovantes.
+          </p>
+          <p>
+            Au cours de ma formation, j'ai acquis des compétences solides en programmation, en conception de sites web et en gestion de bases de données. J'aime relever des défis techniques et travailler sur des projets qui ont un impact réel.
+          </p>
+          <p>
+            Mon objectif est de contribuer activement à des projets technologiques stimulants tout en continuant à développer mes compétences techniques et professionnelles.
+          </p>
+        </section>
+
+        <section class="service">
+          <h3 class="service-title">Compétences Techniques</h3>
+
+          <ul class="service-list">
+            <li class="service-item">
+              <div class="service-icon-box">💻</div>
+              <h4 class="service-item-title">Programmation</h4>
+              <p class="service-item-text">
+                Maîtrise de plusieurs langages de programmation tels que Python, Java, C et JavaScript.
+              </p>
+            </li>
+
+            <li class="service-item">
+              <div class="service-icon-box">🌐</div>
+              <h4 class="service-item-title">Développement web</h4>
+              <p class="service-item-text">
+                Compétences en développement de sites web responsives et interactifs avec HTML, CSS et JavaScript.
+              </p>
+            </li>
+
+            <li class="service-item">
+              <div class="service-icon-box">🗄️</div>
+              <h4 class="service-item-title">Bases de données</h4>
+              <p class="service-item-text">
+                Connaissance des systèmes de gestion de bases de données relationnelles SQL.
+              </p>
+            </li>
+
+            <li class="service-item">
+              <div class="service-icon-box">🔗</div>
+              <h4 class="service-item-title">Réseau</h4>
+              <p class="service-item-text">
+                Connaissances fondamentales en réseaux informatiques, y compris les protocoles et la sécurité.
+              </p>
+            </li>
+
+            <li class="service-item">
+              <div class="service-icon-box">📊</div>
+              <h4 class="service-item-title">Traitement de données</h4>
+              <p class="service-item-text">
+                Aptitude à analyser et traiter des données à l'aide d'outils informatiques et de logiciels spécialisés.
+              </p>
+            </li>
+          </ul>
+        </section>
+      </article>
+
+      <article class="resume" data-page="resume">
+        <header><h2 class="article-title">Formations & Expériences</h2></header>
+
+        <section class="timeline">
+          <div class="title-wrapper">
+            <div class="icon-box">📚</div>
+            <h3>Formations</h3>
+          </div>
+
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Université de Limoges</h4>
+              <span>2025 — 2026 <i>(en cours)</i></span>
+              <p>Licence 2 Informatique</p>
+            </li>
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Université de Limoges</h4>
+              <span>2024 — 2025</span>
+              <p>Licence 1 Informatique</p>
+              <div>
+                <ul class="cv-list">
+                  <li>Programmation Python, algorithmique et structures de données et récursivité</li>
+                  <li>Mathématiques (logique, analyse, algèbre)</li>
+                  <li>Développement web(HTML, CSS, JavaScript), Unix et systèmes cyber-physiques (Arduino)</li>
+                </ul>
+              </div>
+            </li>
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Université d'Abomey-Calavi</h4>
+              <span>2023 — 2024</span>
+              <p>Licence 1 Informatique de gestion</p>
+              <ul class="cv-list">
+                  <li>Programmation Python et algorithmique</li>
+                  <li>Mathématiques pour l’informatique (logique, analyse, algèbre)</li>
+                  <li>Architecture des ordinateurs, Linux/Windows et développement web (HTML, CSS)</li>
+                  <li>Outils financiers & notions d’économie/comptabilité</li>
+              </ul>         
+        </section>
+
+        <section class="timeline">
+          <div class="title-wrapper">
+            <div class="icon-box">💼</div>
+            <h3>Expériences professionnelles</h3>
+          </div>
+
+          <ol class="timeline-list">
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Animateur périscolaire</h4>
+              <span>2025 - Présent | Limoges</span>
+              <p>Encadrement des enfants pendant les activités périscolaires, les études et les temps de repas à l'École communale Montmailler.</p>
+            </li>
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Bénévolat – Journée des Oubliés des Vacances</h4>
+              <span>2025 | Paris</span>
+              <p>Accueil et accompagnement de groupes d’enfants, co-animation des activités et soutien logistique.</p>
+            </li>
+            <li class="timeline-item">
+              <h4 class="timeline-item-title">Bénévolat - Baromètre Cleantech Open France</h4>
+              <span>2025 | Paris</span>
+              <p>Accueil et orientation des invités, gestion des intervenants et du vestiaire, remise des badges, mise en place de la signalétique et participation à la communication (photos/vidéos) lors de l'événement.</p>
+            </li>
+          </ol>
+        </section>
+      </article>
+
+      <article class="portfolio" data-page="portfolio">
+  <header><h2 class="article-title">Projets</h2></header>
+  <section class="about-text">
+    <p>📌 Mes Projets </p>
+    <ul class="projects-list">
+      
+      <!-- Jeu de Décodage Interactif -->
+      <li class="project-card">
+        <div class="project-header">
+          <span class="project-emoji">🎮</span>
+          <strong class="project-title">Jeu de Décodage Interactif</strong>
+        </div>
+        
+        <p class="project-desc">
+          Un jeu captivant de décodage en binaire, hexadécimal et octal avec système de score, combos et historique détaillé des réponses !
+        </p>
+        
+        <div class="project-buttons">
+          <button onclick="window.open('jeu-decodage.html')" class="btn-tool">
+            🎮 Lancer le jeu
+          </button>
+        </div>
+      </li>
+
+      <!-- Convertisseur Multi-Base -->
+      <li class="project-card">
+        <div class="project-header">
+          <span class="project-emoji">🔢</span>
+          <strong class="project-title">Convertisseur Multi-Base</strong>
+        </div>
+        
+        <p class="project-desc">
+          Outil professionnel pour encoder et décoder du texte en binaire, hexadécimal, octal, décimal et Base64. 
+          Interface intuitive avec historique des conversions et statistiques en temps réel !
+        </p>
+        
+        <div class="project-buttons">
+          <button onclick="window.open('encoder.html')" class="btn-tool">
+            🔧 Convertisseur
+          </button>
+        </div>
+      </li>
+
+      <!-- Mini-jeu Python -->
+      <li class="project-card">
+        <div class="project-header">
+          <span class="project-emoji">🐍</span>
+          <strong class="project-title">Mini-jeu Python</strong>
+        </div>
+        <p class="project-desc">
+          Création d'un jeu ludique en Python (En cours de développement).
+        </p>
+      </li>
+
+      <!-- Programme C -->
+      <li class="project-card">
+        <div class="project-header">
+          <span class="project-emoji">⚙️</span>
+          <strong class="project-title">Programme C de gestion</strong>
+        </div>
+        <p class="project-desc">
+              Application console CRUD complète permettant la gestion d'employés avec persistance des données en format CSV. Implémente les opérations d'ajout, modification, suppression et recherche avec une interface utilisateur intuitive.
+        </p>
+
+        <div class="project-buttons">
+          <button onclick="window.open('systeme-de-gestion.html')" class="btn-tool">
+            Système de gestion C
+          </button>
+        </div>
+      </li>
+
+      <!-- Autres projets en cours -->
+      <li class="project-card">
+        <div class="project-header">
+          <span class="project-emoji">🛠️</span>
+          <strong class="project-title">Autres</strong>
+        </div>
+        <p class="project-desc">
+          D'autres projets passionnants sont en cours de développement. Ils seront bientôt disponibles ici !
+        </p>
+      </li>
+
+    </ul>
+  </section>
+</article>
+
+      <article class="contact" data-page="contact">
+        <header><h2 class="article-title">Contact</h2></header>
+        
+        <section class="mapbox">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d177832.51668910068!2d1.0670743600633614!3d45.858642407681685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f934afe6680461%3A0x10be4a3159364d11!2sLimoges!5e0!3m2!1sfr!2sfr!4v1763205808513!5m2!1sfr!2sfr" allowfullscreen="" loading="lazy"></iframe>
+        </section>
+
+        <section class="contact-form">
+          <h3 class="form-title">Contactez-moi ici!</h3>
+          <form class="form" id="contact-form">
+            <input type="text" name="name" class="form-input" placeholder="Nom complet" required>
+            <input type="email" name="email" class="form-input" placeholder="Adresse email" required>
+            <textarea name="message" class="form-input" placeholder="Votre message" required></textarea>
+            <button type="submit" class="form-btn">📨Envoyer le message</button>
+          </form>
+          <div id="form-status" class="form-status"></div>
+        </section>
+      </article>
+
+    </div>
+  </main>
+
+  <!-- EmailJS Library -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  
+  <!-- Lien vers le fichier JavaScript externe -->
+  <script src="script.js"></script>
+
+</body>
+
+</html>
