@@ -308,4 +308,5 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+
 console.log('✨ Portfolio Corneille Ligan chargé avec succès!');
